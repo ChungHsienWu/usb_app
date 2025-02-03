@@ -56,6 +56,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 usb_app.list \
 
+OBJCOPY_BIN += \
+usb_app.bin \
+
 
 # All Target
 all: main-build
@@ -79,12 +82,17 @@ usb_app.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+usb_app.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "usb_app.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout usb_app.elf usb_app.list usb_app.map
+	-$(RM) default.size.stdout usb_app.bin usb_app.elf usb_app.list usb_app.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

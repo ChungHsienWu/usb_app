@@ -64,7 +64,15 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	  /*
+	   * App1
+	   * change the flash size and flash origin in FLASH.ld file like:
+	   * FLASH    (rx)    : ORIGIN = 0x8008000,   LENGTH = 22K //64K
+	   *
+	   * in system_stm32f1xx.c change VECT_TAB_OFFSET to your new value like 0x00008000U
+	   * #define USER_VECT_TAB_ADDRESS //First uncomment this in system_stm32f1xx.c
+	   * #define VECT_TAB_OFFSET         0x00008000U
+	   */
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
