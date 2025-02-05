@@ -49,13 +49,20 @@ MEMORY
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 640K
   RAM2    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 64K
   RAM3    (xrw)    : ORIGIN = 0x20040000,   LENGTH = 384K
-  FLASH    (rx)    : ORIGIN = 0x8100000,   LENGTH = 1024K
+  FLASH    (rx)    : ORIGIN = 0x8100000,   LENGTH = 512K
+  FW    (rx)    : ORIGIN = 0x8108fff,   LENGTH = 512K
 }
 
 /* Sections */
 SECTIONS
 {
 
+  .Firmware_Ver :
+  {
+    . = ALIGN(4);
+    KEEP(*(.firmware_version)) /* Startup code */
+    . = ALIGN(4);
+  } >FW
   
   /* The startup code into "FLASH" Rom type memory */
   .isr_vector :

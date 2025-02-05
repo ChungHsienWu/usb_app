@@ -123,11 +123,13 @@ int main(void)
 
   uint32_t pageAddress = ADDR_FLASH_PAGE_63; // Replace with your target page address
   uint32_t flashAddress = 0x0801F800; // Replace with your target flash address
-  uint64_t data = 0x12345678ABCDEF00; // Data to write (64-bit)
+  uint64_t data = 0x12345678; // Data to write (64-bit)
 
   HAL_StatusTypeDef status = FlashErase(pageAddress);
   status = FlashWrite(flashAddress, data);
   uint64_t readdata = FlashRead(flashAddress);
+  flashAddress = 8;
+  uint64_t readdata2 = FlashRead(flashAddress);
 
   /* USER CODE END 2 */
 
