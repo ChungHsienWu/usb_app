@@ -1375,7 +1375,7 @@ typedef struct
 /** @addtogroup Peripheral_memory_map
   * @{
   */
-#define FLASH_BASE            (0x08000000UL) /*!< FLASH(up to 2 MB) base address   */
+#define FLASH_BASE            (0x08100000UL) /*!< FLASH(up to 2 MB) base address   */
 #define FLASH_END             (0x081FFFFFUL) /*!< FLASH END address                */
 #define FLASH_BANK1_END       (0x080FFFFFUL) /*!< FLASH END address of bank1       */
 #define FLASH_BANK2_END       (0x081FFFFFUL) /*!< FLASH END address of bank2       */

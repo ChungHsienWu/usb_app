@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
+#include "Flash.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -32,6 +33,11 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define MEMORY_512KB
+const uint8_t firmware=250202;
+const char firmware1[]="250203";
+volatile const char firmware2[]="FW250204";
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -49,11 +55,30 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+//#define VERINFO_ADDR_BASE (0x08008040)
+//const char Firmware_Ver[] __attriute__(at(VERINFO_ADDR_BASE +0x40)) = "Firmware: 1.0.0";
+
+const char Firmware_Ver[] __attribute__((section(".firmware_version"))) = "FW: 25.2.1";
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+//typedef struct __attribute__((packed)){
+//    uint16_t image_magic;
+//    uint16_t image_version;
+//    uint32_t image_size;
+//    uint32_t crc;
+//
+//} image_hdr_t;
+
+//image_hdr_t image_hdr __attribute__((section(".fw_header")))= {
+//    .image_magic = 0,
+//    .image_version = 250204,
+//    .image_size = 0,               //to be added manually using crc.py script after build
+//    .crc = 0                       //-do-
+//};
+
 
 /* USER CODE END 0 */
 
@@ -95,6 +120,14 @@ int main(void)
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+
+  uint32_t pageAddress = ADDR_FLASH_PAGE_63; // Replace with your target page address
+  uint32_t flashAddress = 0x0801F800; // Replace with your target flash address
+  uint64_t data = 0x12345678ABCDEF00; // Data to write (64-bit)
+
+  HAL_StatusTypeDef status = FlashErase(pageAddress);
+  status = FlashWrite(flashAddress, data);
+  uint64_t readdata = FlashRead(flashAddress);
 
   /* USER CODE END 2 */
 
@@ -181,7 +214,7 @@ static void MX_GPIO_Init(void)
 void USB_CDC_RxHandler(uint8_t* USB_Buf, uint32_t Len)
 {
 	USB_Buf[0]=USB_Buf[0];
-	CDC_Transmit_FS((uint8_t*)"I am app", sizeof("I am app") - 1);
+	//CDC_Transmit_FS((uint8_t*)"FW:250204", sizeof("FW:250204") - 1);
 }
 /* USER CODE END 4 */
 
